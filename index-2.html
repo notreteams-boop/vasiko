@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vasiko — Kebabnīca & Gruzīnu Cepumi Rīgā</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #E8001A;
+      --red-dark: #C0001A;
+      --black: #0a0a0a;
+      --off-black: #111111;
+      --white: #ffffff;
+      --gray: #888;
+      --light-gray: #f4f4f4;
+      --border: #e5e5e5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAVBAR ─────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo .logo-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 26px;
+      color: var(--red);
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+    .nav-logo .logo-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: 10px;
+      color: var(--black);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      line-height: 1.2;
+      max-width: 180px;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--black);
+      transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--white);
+    }
+    .lang-btn:hover:not(.active) {
+      border-color: var(--black);
+    }
+
+    .cart-btn {
+      position: relative;
+      width: 44px;
+      height: 44px;
+      background: var(--black);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      transition: background 0.2s;
+    }
+    .cart-btn:hover { background: var(--red); }
+    .cart-btn svg { width: 20px; height: 20px; stroke: white; fill: none; stroke-width: 2; }
+    .cart-count {
+      position: absolute;
+      top: -4px; right: -4px;
+      background: var(--red);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      display: none;
+    }
+    .cart-count.visible { display: flex; }
+
+    /* ─── HERO ───────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.35;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 24px;
+      max-width: 700px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--red);
+      color: white;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+    .hero-badge .dot {
+      width: 7px; height: 7px;
+      background: white;
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(42px, 8vw, 80px);
+      color: var(--white);
+      line-height: 1;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.6;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: rgba(255,255,255,0.65);
+      font-size: 14px;
+    }
+    .hero-meta-item svg { width: 15px; height: 15px; stroke: var(--red); fill: none; stroke-width: 2; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--red);
+      color: white;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 16px 32px;
+      border-radius: 4px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .btn-primary svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+
+    /* ─── MENU SECTION ───────────────────────────── */
+    .section-menu {
+      padding: 80px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::before {
+      content: '—';
+    }
+
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(36px, 6vw, 60px);
+      text-transform: uppercase;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      font-size: 15px;
+      color: var(--gray);
+      margin-bottom: 36px;
+    }
+
+    /* Category tabs */
+    .cat-tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .cat-tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 30px;
+      padding: 9px 18px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--black);
+      transition: all 0.2s;
+    }
+    .cat-tab.active {
+      background: var(--red);
+      border-color: var(--red);
+      color: white;
+    }
+    .cat-tab:hover:not(.active) {
+      border-color: var(--black);
+    }
+
+    /* Menu grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .menu-card {
+      background: white;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .menu-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    }
+
+    .card-img {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      overflow: hidden;
+      background: var(--light-gray);
+    }
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .menu-card:hover .card-img img { transform: scale(1.04); }
+
+    .card-badge {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: white;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--black);
+      padding: 4px 10px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .card-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 20px;
+      color: white;
+    }
+    .card-tag.komplekts { background: #2563eb; }
+    .card-tag.vegetars { background: #16a34a; }
+
+    .card-body {
+      padding: 14px 16px 16px;
+    }
+
+    .card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      color: var(--black);
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--gray);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .add-to-cart {
+      width: 100%;
+      background: var(--black);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 11px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .add-to-cart:hover { background: var(--red); }
+    .add-to-cart svg { width: 16px; height: 16px; stroke: white; fill: none; stroke-width: 2; }
+
+    /* ─── ABOUT ──────────────────────────────────── */
+    .section-about {
+      background: var(--black);
+      color: white;
+      padding: 80px 24px;
+    }
+    .about-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    @media(max-width: 640px) { .about-inner { grid-template-columns: 1fr; gap: 36px; } }
+
+    .about-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .about-content .section-label { color: var(--red); }
+    .about-content .section-title { color: white; }
+    .about-content p { color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 32px; }
+
+    .about-stats {
+      display: flex;
+      gap: 32px;
+    }
+    .stat {
+      border-top: 2px solid var(--red);
+      padding-top: 12px;
+    }
+    .stat-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      color: white;
+      display: block;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* ─── CONTACTS ───────────────────────────────── */
+    .section-contacts {
+      padding: 80px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 40px;
+    }
+    @media(max-width: 640px) { .contacts-grid { grid-template-columns: 1fr; } }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .contact-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .contact-label svg { width: 14px; height: 14px; stroke: var(--red); fill: none; stroke-width: 2; }
+    .contact-val {
+      font-size: 16px;
+      color: var(--black);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+    .contact-val a { color: var(--black); text-decoration: none; }
+    .contact-val a:hover { color: var(--red); }
+
+    .map-embed {
+      width: 100%;
+      height: 280px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      margin-top: 40px;
+    }
+    .map-embed iframe { width: 100%; height: 100%; border: none; }
+
+    /* ─── SOCIALS ────────────────────────────────── */
+    .social-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+    }
+    .social-link {
+      width: 44px; height: 44px;
+      background: var(--black);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .social-link:hover { background: var(--red); }
+    .social-link svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2; }
+
+    /* ─── FOOTER ─────────────────────────────────── */
+    footer {
+      background: var(--off-black);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+    }
+    footer span { color: var(--red); }
+
+    /* ─── CART DRAWER ────────────────────────────── */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+    .cart-drawer {
+      position: fixed;
+      top: 0; right: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      background: white;
+      z-index: 2001;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .cart-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .cart-title svg { width: 22px; height: 22px; stroke: var(--red); fill: none; stroke-width: 2; }
+
+    .close-btn {
+      width: 36px; height: 36px;
+      background: var(--light-gray);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .close-btn:hover { background: var(--border); }
+    .close-btn svg { width: 18px; height: 18px; stroke: var(--black); fill: none; stroke-width: 2; }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px;
+    }
+
+    .cart-empty {
+      text-align: center;
+      padding: 60px 0;
+      color: var(--gray);
+    }
+    .cart-empty svg { width: 48px; height: 48px; stroke: var(--border); fill: none; stroke-width: 1.5; margin-bottom: 16px; }
+    .cart-empty p { font-size: 15px; }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-item-img {
+      width: 60px; height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      background: var(--light-gray);
+      flex-shrink: 0;
+    }
+    .cart-item-info { flex: 1; }
+    .cart-item-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .cart-item-price {
+      color: var(--red);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .qty-btn {
+      width: 30px; height: 30px;
+      background: var(--light-gray);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s;
+      line-height: 1;
+    }
+    .qty-btn:hover { background: var(--border); }
+    .qty-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    .remove-item {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+    }
+    .remove-item svg { width: 16px; height: 16px; stroke: var(--gray); fill: none; stroke-width: 2; }
+    .remove-item:hover svg { stroke: var(--red); }
+
+    .cart-footer {
+      padding: 20px 24px;
+      border-top: 1.5px solid var(--border);
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .cart-total-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray);
+    }
+    .cart-total-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      color: var(--red);
+    }
+
+    .whatsapp-btn {
+      width: 100%;
+      background: #25D366;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 16px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .whatsapp-btn:hover { background: #1ebe5d; transform: translateY(-1px); }
+    .whatsapp-btn:disabled { background: var(--border); color: var(--gray); cursor: not-allowed; transform: none; }
+    .whatsapp-btn svg { width: 22px; height: 22px; fill: white; }
+
+    .clear-cart {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--gray);
+      font-size: 13px;
+      text-align: center;
+      cursor: pointer;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 6px;
+      transition: color 0.2s;
+    }
+    .clear-cart:hover { color: var(--red); }
+    .clear-cart svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* ─── TOAST ──────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--black);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 3000;
+      opacity: 0;
+      transition: opacity 0.25s, transform 0.25s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast svg { width: 18px; height: 18px; stroke: #25D366; fill: none; stroke-width: 2.5; }
+
+    /* ─── RESPONSIVE ─────────────────────────────── */
+    @media(max-width: 480px) {
+      nav { padding: 0 16px; }
+      .hero-content { padding: 0 16px; }
+      .section-menu, .section-contacts { padding: 60px 16px; }
+      .section-about { padding: 60px 16px; }
+      .menu-grid { grid-template-columns: 1fr; }
+      .cart-drawer { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <div>
+        <div class="logo-text">VASIKO</div>
+        <div class="logo-sub">Kebabnīca & Gruzīnu Cepumi Rīgā</div>
+      </div>
+    </a>
+    <div class="nav-right">
+      <button class="lang-btn active" onclick="setLang('lv')">LV</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('ru')">RU</button>
+      <button class="lang-btn" onclick="setLang('tr')">TR</button>
+      <button class="cart-btn" onclick="openCart()">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        <span data-t="openBadge">Atvērts no plkst. 10:00 · Latgales 250A</span>
+      </div>
+      <h1 data-t="heroTitle">Sulīgi Kebabi un Svaiga Gruzīnu Cepumu Maize</h1>
+      <p data-t="heroSub">Īsts ielas ēdiens Rīgas sirdī. Cepts šodien, pasniegts karsts.</p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span>Latgales iela 250A, Rīga</span>
+        </div>
+        <div class="hero-meta-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span data-t="openHours">Atvērts no plkst. 10:00</span>
+        </div>
+      </div>
+      <a href="#menu" class="btn-primary">
+        <span data-t="heroBtn">Uz ēdienkarti un pasūtījumu</span>
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- MENU SECTION -->
+  <section class="section-menu" id="menu">
+    <div class="section-label" data-t="menuLabel">Ēdienkarte</div>
+    <h2 class="section-title" data-t="menuTitle">Izvēlies, kas tev šodien garšo</h2>
+    <p class="section-sub" data-t="menuSub">Pievieno grozam un nosūti pasūtījumu pa WhatsApp.</p>
+
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" data-cat="kebabi" onclick="filterCat(this,'kebabi')">
+        🔥 <span data-t="catKebabi">Kebabi maizē un lavašā</span>
+      </button>
+      <button class="cat-tab" data-cat="cepumi" onclick="filterCat(this,'cepumi')">
+        🫓 <span data-t="catCepumi">Cepumi un nacionālie ēdieni</span>
+      </button>
+      <button class="cat-tab" data-cat="pica" onclick="filterCat(this,'pica')">
+        🍕 <span data-t="catPica">Pica un frī</span>
+      </button>
+      <button class="cat-tab" data-cat="dzeri" onclick="filterCat(this,'dzeri')">
+        🥤 <span data-t="catDzeri">Dzērieni un piedevas</span>
+      </button>
+    </div>
+
+    <div class="menu-grid" id="menuGrid"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section-about" id="about">
+    <div class="about-inner">
+      <img class="about-img"
+        src="https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=800&q=80"
+        alt="Vasiko khachapuri" />
+      <div class="about-content">
+        <div class="section-label" data-t="aboutLabel">Par mums</div>
+        <h2 class="section-title" data-t="aboutTitle">Garša, kurai uzticas</h2>
+        <p data-t="aboutText">Vasiko ir vieta, kur Tuvo Austrumu un Gruzijas tradīcijas satiekas Latgales ielā. Mēs gatavojam katru kebabu uz pasūtījumu, lavašus un hačapuri cepam paši — no rīta līdz vakaram.</p>
+        <div class="about-stats">
+          <div class="stat">
+            <span class="stat-val">100%</span>
+            <span class="stat-label" data-t="stat1">Cepts šodien</span>
+          </div>
+          <div class="stat">
+            <span class="stat-val" data-t="stat2val">Autentiskas</span>
+            <span class="stat-label" data-t="stat2">receptes</span>
+          </div>
+          <div class="stat">
+            <span class="stat-val" data-t="stat3val">Katru</span>
+            <span class="stat-label" data-t="stat3">dienu atvērts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTS -->
+  <section class="section-contacts" id="contacts">
+    <div class="section-label" data-t="contactLabel">Sazināties</div>
+    <h2 class="section-title" data-t="contactTitle">Atrodi mūs</h2>
+    <div class="contacts-grid">
+      <div>
+        <div class="contact-item" style="margin-bottom:24px">
+          <div class="contact-label">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span data-t="addrLabel">Adrese</span>
+          </div>
+          <div class="contact-val">Latgales iela 250A, Latgales priekšpilsēta,<br>Rīga, LV-1063, Latvija</div>
+        </div>
+        <div class="contact-item" style="margin-bottom:24px">
+          <div class="contact-label">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span data-t="hoursLabel">Darba laiks</span>
+          </div>
+          <div class="contact-val" data-t="hoursVal">Katru dienu no 10:00</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+            <span data-t="contactUs">Sazinies</span>
+          </div>
+          <div class="contact-val">
+            WhatsApp: <a href="https://wa.me/37125405784">+37125405784</a>
+          </div>
+        </div>
+        <div class="social-links">
+          <a class="social-link" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a class="social-link" href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="map-embed">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2178.0!2d24.1758!3d56.9106!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46eecfd9e83a8f23%3A0x0!2sLatgales%20iela%20250A%2C%20R%C4%ABga!5e0!3m2!1slv!2slv!4v1000000000000"
+            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    © 2025 <span>Vasiko</span>. Visas tiesības aizsargātas.
+  </footer>
+
+  <!-- CART OVERLAY -->
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <div class="cart-title">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span data-t="cartTitle">Tavs pasūtījums</span>
+      </div>
+      <button class="close-btn" onclick="closeCart()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty" id="cartEmpty">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <p data-t="cartEmpty">Grozs ir tukšs</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total-row">
+        <span class="cart-total-label" data-t="cartTotal">Kopā</span>
+        <span class="cart-total-val" id="cartTotal">0.00 €</span>
+      </div>
+      <button class="whatsapp-btn" onclick="sendWhatsApp()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <span data-t="sendOrder">Noformēt pasūtījumu WhatsApp</span>
+      </button>
+      <button class="clear-cart" onclick="clearCart()">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+        <span data-t="clearCart">Iztīrīt grozu</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toastMsg"></span>
+  </div>
+
+  <script>
+  /* ─── TRANSLATIONS ─── */
+  const T = {
+    lv: {
+      openBadge: 'Atvērts no plkst. 10:00 · Latgales 250A',
+      heroTitle: 'Sulīgi Kebabi un Svaiga Gruzīnu Cepumu Maize',
+      heroSub: 'Īsts ielas ēdiens Rīgas sirdī. Cepts šodien, pasniegts karsts.',
+      openHours: 'Atvērts no plkst. 10:00',
+      heroBtn: 'Uz ēdienkarti un pasūtījumu',
+      menuLabel: 'Ēdienkarte',
+      menuTitle: 'Izvēlies, kas tev šodien garšo',
+      menuSub: 'Pievieno grozam un nosūti pasūtījumu pa WhatsApp.',
+      catKebabi: 'Kebabi maizē un lavašā',
+      catCepumi: 'Cepumi un nacionālie ēdieni',
+      catPica: 'Pica un frī',
+      catDzeri: 'Dzērieni un piedevas',
+      aboutLabel: 'Par mums',
+      aboutTitle: 'Garša, kurai uzticas',
+      aboutText: 'Vasiko ir vieta, kur Tuvo Austrumu un Gruzijas tradīcijas satiekas Latgales ielā. Mēs gatavojam katru kebabu uz pasūtījumu, lavašus un hačapuri cepam paši — no rīta līdz vakaram.',
+      stat1: 'Cepts šodien', stat2val: 'Autentiskas', stat2: 'receptes', stat3val: 'Katru', stat3: 'dienu atvērts',
+      contactLabel: 'Sazināties', contactTitle: 'Atrodi mūs',
+      addrLabel: 'Adrese', hoursLabel: 'Darba laiks', hoursVal: 'Katru dienu no 10:00', contactUs: 'Sazinies',
+      cartTitle: 'Tavs pasūtījums', cartEmpty: 'Grozs ir tukšs',
+      cartTotal: 'Kopā', sendOrder: 'Noformēt pasūtījumu WhatsApp',
+      clearCart: 'Iztīrīt grozu', addToCart: '+ Grozā',
+      toastAdded: 'Pievienots grozam', toastRemoved: 'Noņemts no groza',
+      whatsappMsg: (items, total) => `Sveiki! Vēlos pasūtīt:\n${items}\n\nKopā: ${total} €\n\nPasūtīju no jūsu mājas lapas.`
+    },
+    en: {
+      openBadge: 'Open from 10:00 · Latgales 250A',
+      heroTitle: 'Juicy Kebabs & Fresh Georgian Bread',
+      heroSub: 'Real street food in the heart of Riga. Baked today, served hot.',
+      openHours: 'Open from 10:00',
+      heroBtn: 'See menu & order',
+      menuLabel: 'Menu',
+      menuTitle: 'Choose what you feel like today',
+      menuSub: 'Add to cart and send your order via WhatsApp.',
+      catKebabi: 'Kebabs in bread & lavash',
+      catCepumi: 'Baked goods & national dishes',
+      catPica: 'Pizza & fries',
+      catDzeri: 'Drinks & extras',
+      aboutLabel: 'About us',
+      aboutTitle: 'A taste you can trust',
+      aboutText: 'Vasiko is where Middle Eastern and Georgian traditions meet on Latgales street. Every kebab is made to order, lavash and khachapuri baked fresh — morning to evening.',
+      stat1: 'Baked today', stat2val: 'Authentic', stat2: 'recipes', stat3val: 'Every', stat3: 'day open',
+      contactLabel: 'Contact', contactTitle: 'Find us',
+      addrLabel: 'Address', hoursLabel: 'Opening hours', hoursVal: 'Every day from 10:00', contactUs: 'Contact',
+      cartTitle: 'Your order', cartEmpty: 'Your cart is empty',
+      cartTotal: 'Total', sendOrder: 'Place order via WhatsApp',
+      clearCart: 'Clear cart', addToCart: '+ Add',
+      toastAdded: 'Added to cart', toastRemoved: 'Removed from cart',
+      whatsappMsg: (items, total) => `Hello! I'd like to order:\n${items}\n\nTotal: ${total} €\n\nOrdered from your website.`
+    },
+    ru: {
+      openBadge: 'Открыто с 10:00 · Latgales 250A',
+      heroTitle: 'Сочные Кебабы и Свежая Грузинская Выпечка',
+      heroSub: 'Настоящая уличная еда в сердце Риги. Приготовлено сегодня, подаётся горячим.',
+      openHours: 'Открыто с 10:00',
+      heroBtn: 'К меню и заказу',
+      menuLabel: 'Меню',
+      menuTitle: 'Выбери, что сегодня хочется',
+      menuSub: 'Добавь в корзину и отправь заказ через WhatsApp.',
+      catKebabi: 'Кебабы в хлебе и лаваше',
+      catCepumi: 'Выпечка и национальные блюда',
+      catPica: 'Пицца и фри',
+      catDzeri: 'Напитки и дополнения',
+      aboutLabel: 'О нас',
+      aboutTitle: 'Вкус, которому доверяют',
+      aboutText: 'Vasiko — место, где ближневосточные и грузинские традиции встречаются на улице Латгалес. Каждый кебаб готовим под заказ, лаваши и хачапури печём сами — с утра до вечера.',
+      stat1: 'Печём сегодня', stat2val: 'Аутентичные', stat2: 'рецепты', stat3val: 'Каждый', stat3: 'день открыто',
+      contactLabel: 'Контакты', contactTitle: 'Найди нас',
+      addrLabel: 'Адрес', hoursLabel: 'Время работы', hoursVal: 'Каждый день с 10:00', contactUs: 'Связаться',
+      cartTitle: 'Ваш заказ', cartEmpty: 'Корзина пуста',
+      cartTotal: 'Итого', sendOrder: 'Оформить заказ через WhatsApp',
+      clearCart: 'Очистить корзину', addToCart: '+ В корзину',
+      toastAdded: 'Добавлено в корзину', toastRemoved: 'Удалено из корзины',
+      whatsappMsg: (items, total) => `Здравствуйте! Хочу заказать:\n${items}\n\nИтого: ${total} €\n\nЗаказ с вашего сайта.`
+    },
+    tr: {
+      openBadge: '10:00\'dan itibaren açık · Latgales 250A',
+      heroTitle: 'Sulu Kebaplar ve Taze Gürcü Ekmeği',
+      heroSub: 'Riga\'nın kalbinde gerçek sokak yemeği. Bugün pişirildi, sıcak servis edildi.',
+      openHours: '10:00\'dan itibaren açık',
+      heroBtn: 'Menüye ve siparişe git',
+      menuLabel: 'Menü',
+      menuTitle: 'Bugün ne istediğini seç',
+      menuSub: 'Sepete ekle ve WhatsApp üzerinden sipariş gönder.',
+      catKebabi: 'Ekmekte ve lavašta kebaplar',
+      catCepumi: 'Fırın ürünleri ve milli yemekler',
+      catPica: 'Pizza ve patates',
+      catDzeri: 'İçecekler ve ekstralar',
+      aboutLabel: 'Hakkımızda',
+      aboutTitle: 'Güvenilen lezzet',
+      aboutText: 'Vasiko, Orta Doğu ve Gürcü geleneklerinin Latgales Caddesi\'nde buluştuğu yerdir. Her kebabı sipariş üzerine hazırlıyor, lavaş ve haçapuri\'yi sabahtan akşama kadar taze pişiriyoruz.',
+      stat1: 'Bugün pişirildi', stat2val: 'Otantik', stat2: 'tarifler', stat3val: 'Her gün', stat3: 'açık',
+      contactLabel: 'İletişim', contactTitle: 'Bizi bul',
+      addrLabel: 'Adres', hoursLabel: 'Çalışma saatleri', hoursVal: 'Her gün 10:00\'dan itibaren', contactUs: 'İletişim',
+      cartTitle: 'Siparişiniz', cartEmpty: 'Sepet boş',
+      cartTotal: 'Toplam', sendOrder: 'WhatsApp ile sipariş ver',
+      clearCart: 'Sepeti temizle', addToCart: '+ Sepete ekle',
+      toastAdded: 'Sepete eklendi', toastRemoved: 'Sepetten kaldırıldı',
+      whatsappMsg: (items, total) => `Merhaba! Sipariş vermek istiyorum:\n${items}\n\nToplam: ${total} €\n\nSitenizden sipariş verdim.`
+    }
+  };
+
+  let lang = 'lv';
+
+  function setLang(l) {
+    lang = l;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.lang-btn').forEach(b => { if(b.textContent.trim().toLowerCase()===l) b.classList.add('active'); });
+    document.querySelectorAll('[data-t]').forEach(el => {
+      const key = el.getAttribute('data-t');
+      if(T[l][key] && typeof T[l][key] === 'string') el.textContent = T[l][key];
+    });
+    renderMenu();
+    renderCart();
+  }
+
+  /* ─── MENU DATA ─── */
+  const MENU = [
+    // kebabi
+    { id:1, cat:'kebabi', tag:'', price:6.20, img:'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=600&q=80',
+      name:{ lv:'Kebabs maizē – Vista', en:'Chicken kebab in bread', ru:'Кебаб в хлебе – Курица', tr:'Ekmekte tavuk kebabı' } },
+    { id:2, cat:'kebabi', tag:'', price:6.50, img:'https://images.unsplash.com/photo-1561651823-34feb02250e4?w=600&q=80',
+      name:{ lv:'Kebabs maizē – Liellopa', en:'Beef kebab in bread', ru:'Кебаб в хлебе – Говядина', tr:'Ekmekte dana kebabı' } },
+    { id:3, cat:'kebabi', tag:'', price:6.50, img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=80',
+      name:{ lv:'Kebabs maizē – Mix', en:'Mix kebab in bread', ru:'Кебаб в хлебе – Микс', tr:'Ekmekte mix kebabı' } },
+    { id:4, cat:'kebabi', tag:'komplekts', price:9.90, img:'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=600&q=80',
+      name:{ lv:'Komplekts: Maizē + Frī + Dzēriens', en:'Set: Bread + Fries + Drink', ru:'Комплект: Хлеб + Фри + Напиток', tr:'Set: Ekmek + Patates + İçecek' } },
+    { id:5, cat:'kebabi', tag:'', price:5.50, img:'https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=600&q=80',
+      name:{ lv:'Kebabs lavašā – Vista', en:'Chicken kebab in lavash', ru:'Кебаб в лаваше – Курица', tr:'Lavašta tavuk kebabı' } },
+    { id:6, cat:'kebabi', tag:'', price:5.80, img:'https://images.unsplash.com/photo-1561651823-34feb02250e4?w=600&q=80',
+      name:{ lv:'Kebabs lavašā – Liellopa', en:'Beef kebab in lavash', ru:'Кебаб в лаваше – Говядина', tr:'Lavašta dana kebabı' } },
+    { id:7, cat:'kebabi', tag:'', price:5.80, img:'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&q=80',
+      name:{ lv:'Kebabs lavašā – Mix', en:'Mix kebab in lavash', ru:'Кебаб в лаваше – Микс', tr:'Lavašta mix kebabı' } },
+    { id:8, cat:'kebabi', tag:'komplekts', price:9.20, img:'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=600&q=80',
+      name:{ lv:'Komplekts: Lavašā + Frī + Dzēriens', en:'Set: Lavash + Fries + Drink', ru:'Комплект: Лаваш + Фри + Напиток', tr:'Set: Lavaš + Patates + İçecek' } },
+    { id:9, cat:'kebabi', tag:'vegetars', price:6.20, img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80',
+      name:{ lv:'Kebabs veģetārais – Maizē', en:'Vegetarian kebab in bread', ru:'Вегетарианский кебаб в хлебе', tr:'Ekmekte vejetaryen kebabı' } },
+    { id:10, cat:'kebabi', tag:'vegetars', price:5.50, img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80',
+      name:{ lv:'Kebabs veģetārais – Lavašā', en:'Vegetarian kebab in lavash', ru:'Вегетарианский кебаб в лаваше', tr:'Lavašta vejetaryen kebabı' } },
+    { id:11, cat:'kebabi', tag:'komplekts', price:9.50, img:'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=600&q=80',
+      name:{ lv:'Komplekts veģetārais: Maizē/Lavašā + Frī + Dzēriens', en:'Vegetarian set: Bread/Lavash + Fries + Drink', ru:'Вегетарианский комплект + Фри + Напиток', tr:'Vejetaryen set + Patates + İçecek' } },
+
+    // cepumi
+    { id:12, cat:'cepumi', tag:'', price:1.30, img:'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=600&q=80',
+      name:{ lv:'Gruzīnu lavašs', en:'Georgian lavash', ru:'Грузинский лаваш', tr:'Gürcü lavašı' } },
+    { id:13, cat:'cepumi', tag:'', price:1.50, img:'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=600&q=80',
+      name:{ lv:'Gruzīnu lavašs ar ķiplokiem', en:'Georgian lavash with garlic', ru:'Грузинский лаваш с чесноком', tr:'Sarımsaklı Gürcü lavašı' } },
+    { id:14, cat:'cepumi', tag:'', price:4.90, img:'https://images.unsplash.com/photo-1541592553160-82008b127ccb?w=600&q=80',
+      name:{ lv:'Haičun', en:'Haychun', ru:'Хайчун', tr:'Haychun' } },
+    { id:15, cat:'cepumi', tag:'', price:6.80, img:'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&q=80',
+      name:{ lv:'Hačapuri', en:'Khachapuri', ru:'Хачапури', tr:'Haçapuri' } },
+    { id:16, cat:'cepumi', tag:'', price:7.50, img:'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=600&q=80',
+      name:{ lv:'Hačapuri Adžarijas', en:'Adjarian khachapuri', ru:'Аджарский хачапури', tr:'Acaristan haçapurisi' } },
+
+    // pica
+    { id:17, cat:'pica', tag:'', price:8.00, img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80',
+      name:{ lv:'Lahmadžun', en:'Lahmacun', ru:'Лахмаджун', tr:'Lahmacun' } },
+    { id:18, cat:'pica', tag:'', price:7.30, img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80',
+      name:{ lv:'Pica Salami', en:'Salami pizza', ru:'Пицца Салями', tr:'Salami pizza' } },
+    { id:19, cat:'pica', tag:'', price:9.50, img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80',
+      name:{ lv:'Pica Vasiko', en:'Vasiko pizza', ru:'Пицца Васико', tr:'Vasiko pizza' } },
+    { id:20, cat:'pica', tag:'', price:2.00, img:'https://images.unsplash.com/photo-1541592553160-82008b127ccb?w=600&q=80',
+      name:{ lv:'Pica Salami 1 gabals', en:'Salami pizza slice', ru:'Пицца Салями — кусок', tr:'Salami pizza dilimi' } },
+    { id:21, cat:'pica', tag:'', price:2.30, img:'https://images.unsplash.com/photo-1541592553160-82008b127ccb?w=600&q=80',
+      name:{ lv:'Lahmadžun 1 gabals', en:'Lahmacun piece', ru:'Лахмаджун — кусок', tr:'Lahmacun parçası' } },
+    { id:22, cat:'pica', tag:'', price:2.50, img:'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&q=80',
+      name:{ lv:'Pica Vasiko 1 gabals', en:'Vasiko pizza slice', ru:'Пицца Васико — кусок', tr:'Vasiko pizza dilimi' } },
+    { id:23, cat:'pica', tag:'', price:2.80, img:'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=600&q=80',
+      name:{ lv:'Frī kartupeļi', en:'French fries', ru:'Картофель фри', tr:'Patates kızartması' } },
+
+    // dzeri
+    { id:24, cat:'dzeri', tag:'', price:1.60, img:'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=600&q=80',
+      name:{ lv:'Kola, Fanta, Sprite, Kvass, Sula', en:'Cola, Fanta, Sprite, Kvass, Juice', ru:'Кола, Фанта, Спрайт, Квас, Сок', tr:'Kola, Fanta, Sprite, Kvas, Meyve suyu' } },
+    { id:25, cat:'dzeri', tag:'', price:2.00, img:'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=600&q=80',
+      name:{ lv:'Kola 0.5, Kola stikls', en:'Cola 0.5L, Cola glass', ru:'Кола 0,5, Кола стакан', tr:'Kola 0.5L, Kola bardak' } },
+    { id:26, cat:'dzeri', tag:'', price:2.50, img:'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=600&q=80',
+      name:{ lv:'Ayran, Ūdens', en:'Ayran, Water', ru:'Айран, Вода', tr:'Ayran, Su' } },
+    { id:27, cat:'dzeri', tag:'', price:0.70, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+      name:{ lv:'Dubultā gaļa kebabiem', en:'Double meat for kebab', ru:'Двойное мясо для кебаба', tr:'Kebap için çift et' } },
+    { id:28, cat:'dzeri', tag:'', price:1.50, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+      name:{ lv:'Dubultais siers kebabiem', en:'Double cheese for kebab', ru:'Двойной сыр для кебаба', tr:'Kebap için çift peynir' } },
+    { id:29, cat:'dzeri', tag:'', price:1.50, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+      name:{ lv:'Dubultā gaļa picām', en:'Double meat for pizza', ru:'Двойное мясо для пиццы', tr:'Pizza için çift et' } },
+    { id:30, cat:'dzeri', tag:'', price:2.50, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+      name:{ lv:'Dubultais siers picām', en:'Double cheese for pizza', ru:'Двойной сыр для пиццы', tr:'Pizza için çift peynir' } },
+    { id:31, cat:'dzeri', tag:'', price:2.50, img:'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=600&q=80',
+      name:{ lv:'Mērce', en:'Sauce', ru:'Соус', tr:'Sos' } },
+  ];
+
+  let activeCat = 'kebabi';
+  let cart = {};
+
+  function filterCat(btn, cat) {
+    activeCat = cat;
+    document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderMenu();
+  }
+
+  function renderMenu() {
+    const grid = document.getElementById('menuGrid');
+    const items = MENU.filter(i => i.cat === activeCat);
+    grid.innerHTML = items.map(item => `
+      <div class="menu-card">
+        <div class="card-img">
+          <img src="${item.img}" alt="${item.name[lang]}" loading="lazy"/>
+          <span class="card-badge">${item.price.toFixed(2)} €</span>
+          ${item.tag === 'komplekts' ? '<span class="card-tag komplekts">Komplekts</span>' : ''}
+          ${item.tag === 'vegetars' ? '<span class="card-tag vegetars">Veģetārs</span>' : ''}
+        </div>
+        <div class="card-body">
+          <div class="card-name">${item.name[lang]}</div>
+          <button class="add-to-cart" onclick="addToCart(${item.id})">
+            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            ${T[lang].addToCart}
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* ─── CART ─── */
+  function addToCart(id) {
+    cart[id] = (cart[id] || 0) + 1;
+    updateCartUI();
+    showToast(T[lang].toastAdded);
+  }
+
+  function removeFromCart(id) {
+    if (cart[id] > 1) cart[id]--;
+    else delete cart[id];
+    updateCartUI();
+    renderCart();
+  }
+
+  function deleteFromCart(id) {
+    delete cart[id];
+    updateCartUI();
+    renderCart();
+  }
+
+  function clearCart() {
+    cart = {};
+    updateCartUI();
+    renderCart();
+  }
+
+  function updateCartUI() {
+    const total = Object.keys(cart).reduce((s,id) => s + cart[id], 0);
+    const countEl = document.getElementById('cartCount');
+    if (total > 0) { countEl.textContent = total; countEl.classList.add('visible'); }
+    else { countEl.classList.remove('visible'); }
+  }
+
+  function renderCart() {
+    const el = document.getElementById('cartItems');
+    const footer = document.getElementById('cartFooter');
+    const empty = document.getElementById('cartEmpty');
+    const ids = Object.keys(cart).filter(id => cart[id] > 0);
+
+    if (ids.length === 0) {
+      empty.style.display = 'block';
+      footer.style.display = 'none';
+      el.innerHTML = '';
+      el.appendChild(empty);
+      return;
+    }
+
+    empty.style.display = 'none';
+    footer.style.display = 'block';
+
+    let total = 0;
+    el.innerHTML = ids.map(id => {
+      const item = MENU.find(m => m.id == id);
+      const qty = cart[id];
+      total += item.price * qty;
+      return `
+        <div class="cart-item">
+          <img class="cart-item-img" src="${item.img}" alt="${item.name[lang]}"/>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name[lang]}</div>
+            <div class="cart-item-price">${item.price.toFixed(2)} €</div>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="removeFromCart(${id})">−</button>
+            <span class="qty-num">${qty}</span>
+            <button class="qty-btn" onclick="addToCart(${id})">+</button>
+          </div>
+          <button class="remove-item" onclick="deleteFromCart(${id})">
+            <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('cartTotal').textContent = total.toFixed(2) + ' €';
+  }
+
+  function openCart() {
+    renderCart();
+    document.getElementById('cartDrawer').classList.add('open');
+    document.getElementById('cartOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCart() {
+    document.getElementById('cartDrawer').classList.remove('open');
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function sendWhatsApp() {
+    const ids = Object.keys(cart).filter(id => cart[id] > 0);
+    if (ids.length === 0) return;
+
+    let total = 0;
+    const itemLines = ids.map(id => {
+      const item = MENU.find(m => m.id == id);
+      const qty = cart[id];
+      const sub = item.price * qty;
+      total += sub;
+      return `• ${item.name[lang]} x${qty} — ${sub.toFixed(2)} €`;
+    });
+
+    const msg = T[lang].whatsappMsg(itemLines.join('\n'), total.toFixed(2));
+    const encoded = encodeURIComponent(msg);
+    window.open(`https://wa.me/37125405784?text=${encoded}`, '_blank');
+  }
+
+  /* ─── TOAST ─── */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* ─── INIT ─── */
+  renderMenu();
+  </script>
+</body>
+</html>
