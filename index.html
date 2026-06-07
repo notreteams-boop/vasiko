@@ -1000,6 +1000,7 @@
       cartTotal: 'Kopā', sendOrder: 'Noformēt pasūtījumu WhatsApp',
       clearCart: 'Iztīrīt grozu', addToCart: '+ Grozā',
       toastAdded: 'Pievienots grozam', toastRemoved: 'Noņemts no groza',
+      tagKomplekts: 'Komplekts', tagVegetars: 'Veģetārs',
       whatsappMsg: (items, total) => `Sveiki! Vēlos pasūtīt:\n${items}\n\nKopā: ${total} €\n\nPasūtīju no jūsu mājas lapas.`
     },
     en: {
@@ -1025,6 +1026,7 @@
       cartTotal: 'Total', sendOrder: 'Place order via WhatsApp',
       clearCart: 'Clear cart', addToCart: '+ Add',
       toastAdded: 'Added to cart', toastRemoved: 'Removed from cart',
+      tagKomplekts: 'Set', tagVegetars: 'Vegetarian',
       whatsappMsg: (items, total) => `Hello! I'd like to order:\n${items}\n\nTotal: ${total} €\n\nOrdered from your website.`
     },
     ru: {
@@ -1050,6 +1052,7 @@
       cartTotal: 'Итого', sendOrder: 'Оформить заказ через WhatsApp',
       clearCart: 'Очистить корзину', addToCart: '+ В корзину',
       toastAdded: 'Добавлено в корзину', toastRemoved: 'Удалено из корзины',
+      tagKomplekts: 'Комплект', tagVegetars: 'Вегетарианский',
       whatsappMsg: (items, total) => `Здравствуйте! Хочу заказать:\n${items}\n\nИтого: ${total} €\n\nЗаказ с вашего сайта.`
     },
     tr: {
@@ -1075,6 +1078,7 @@
       cartTotal: 'Toplam', sendOrder: 'WhatsApp ile sipariş ver',
       clearCart: 'Sepeti temizle', addToCart: '+ Sepete ekle',
       toastAdded: 'Sepete eklendi', toastRemoved: 'Sepetten kaldırıldı',
+      tagKomplekts: 'Set', tagVegetars: 'Vejetaryen',
       whatsappMsg: (items, total) => `Merhaba! Sipariş vermek istiyorum:\n${items}\n\nToplam: ${total} €\n\nSitenizden sipariş verdim.`
     }
   };
@@ -1184,8 +1188,8 @@
         <div class="card-img">
           <img src="${item.img}" alt="${item.name[lang]}" loading="lazy"/>
           <span class="card-badge">${item.price.toFixed(2)} €</span>
-          ${item.tag === 'komplekts' ? '<span class="card-tag komplekts">Komplekts</span>' : ''}
-          ${item.tag === 'vegetars' ? '<span class="card-tag vegetars">Veģetārs</span>' : ''}
+          ${item.tag === 'komplekts' ? `<span class="card-tag komplekts">${T[lang].tagKomplekts}</span>` : ''}
+          ${item.tag === 'vegetars' ? `<span class="card-tag vegetars">${T[lang].tagVegetars}</span>` : ''}
         </div>
         <div class="card-body">
           <div class="card-name">${item.name[lang]}</div>
@@ -1248,11 +1252,11 @@
     empty.style.display = 'none';
     footer.style.display = 'block';
 
-    let total = 0;
+    let totalCents = 0;
     el.innerHTML = ids.map(id => {
       const item = MENU.find(m => m.id == id);
       const qty = cart[id];
-      total += item.price * qty;
+      totalCents += Math.round(item.price * 100) * qty;
       return `
         <div class="cart-item">
           <img class="cart-item-img" src="${item.img}" alt="${item.name[lang]}"/>
@@ -1272,7 +1276,7 @@
       `;
     }).join('');
 
-    document.getElementById('cartTotal').textContent = total.toFixed(2) + ' €';
+    document.getElementById('cartTotal').textContent = (totalCents / 100).toFixed(2) + ' €';
   }
 
   function openCart() {
@@ -1292,16 +1296,16 @@
     const ids = Object.keys(cart).filter(id => cart[id] > 0);
     if (ids.length === 0) return;
 
-    let total = 0;
+    let totalCents = 0;
     const itemLines = ids.map(id => {
       const item = MENU.find(m => m.id == id);
       const qty = cart[id];
-      const sub = item.price * qty;
-      total += sub;
-      return `• ${item.name[lang]} x${qty} — ${sub.toFixed(2)} €`;
+      const subCents = Math.round(item.price * 100) * qty;
+      totalCents += subCents;
+      return `• ${item.name[lang]} x${qty} — ${(subCents / 100).toFixed(2)} €`;
     });
 
-    const msg = T[lang].whatsappMsg(itemLines.join('\n'), total.toFixed(2));
+    const msg = T[lang].whatsappMsg(itemLines.join('\n'), (totalCents / 100).toFixed(2));
     const encoded = encodeURIComponent(msg);
     window.open(`https://wa.me/37125405784?text=${encoded}`, '_blank');
   }
